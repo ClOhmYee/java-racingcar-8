@@ -4,11 +4,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import camp.nextstep.edu.missionutils.Console;
+import camp.nextstep.edu.missionutils.Randoms;
 
 public class Application {
     public static void main(String[] args) {
-        List<String> carList = getCarName();
-        int tries = getTries();
+        // List<String> carList = getCarName();
+        // int tries = getTries();
 
         // 추후 구현 예정
     }
@@ -44,5 +45,9 @@ public class Application {
         }
 
         return numTries;
+    }
+
+    public static int getRandomNumber() {
+        return Randoms.pickNumberInRange(0, 9);
     }
 }
