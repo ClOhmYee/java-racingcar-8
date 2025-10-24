@@ -3,8 +3,10 @@ package racingcar;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Map;
 import camp.nextstep.edu.missionutils.Console;
 import camp.nextstep.edu.missionutils.Randoms;
+
 
 public class Application {
     public static void main(String[] args) {
@@ -49,5 +51,24 @@ public class Application {
 
     public static int getRandomNumber() {
         return Randoms.pickNumberInRange(0, 9);
+    }
+
+    public static void visualizeProgress(List<String> car, Map<String, Integer> randNumber) {
+        for (String name : car) {
+            Integer repeat = randNumber.get(name);
+
+            if (repeat == null) {
+                throw new IllegalArgumentException(
+                        "오류: " + name + " 차량 파악 중 문제가 발생했습니다.");
+            }
+
+            System.out.printf("%s : ", name);
+
+            for (int j = 0; j < repeat; j++) {
+                System.out.print("-");
+            }
+
+            System.out.println();
+        }
     }
 }
