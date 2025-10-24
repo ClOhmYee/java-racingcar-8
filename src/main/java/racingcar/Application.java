@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.Map;
+import java.util.ArrayList;
 import camp.nextstep.edu.missionutils.Console;
 import camp.nextstep.edu.missionutils.Randoms;
 
@@ -70,5 +71,23 @@ public class Application {
 
             System.out.println();
         }
+    }
+
+    public static void visualizeWinner(List<String> car, Map<String, Integer> score) {
+        int maxScore = 0;
+        ArrayList<String> winners = new ArrayList<>();
+
+        for (String name : car) {
+            if (maxScore < score.get(name)) {
+                maxScore = score.get(name);
+                winners.clear();
+                winners.add(name);
+            }
+            else if (maxScore == score.get(name)) {
+                winners.add(name);
+            }
+        }
+
+        System.out.println("최종 우승자 : " + String.join(", ", winners));
     }
 }
