@@ -5,16 +5,32 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.Map;
 import java.util.ArrayList;
+import java.util.HashMap;
 import camp.nextstep.edu.missionutils.Console;
 import camp.nextstep.edu.missionutils.Randoms;
 
 
 public class Application {
     public static void main(String[] args) {
-        // List<String> carList = getCarName();
-        // int tries = getTries();
+         List<String> carList = getCarName();
+         int tries = getTries();
+         Map<String, Integer> carScore = new HashMap<>();
 
-        // 추후 구현 예정
+         System.out.println("실행 결과");
+         for (int t = 0; t < tries; t++) {
+             for (String car : carList) {
+                 if (decideForward()) {
+                     carScore.put(car, carScore.getOrDefault(car, 0) + 1);
+                 }
+                 else {
+                     carScore.put(car, carScore.getOrDefault(car, 0));
+                 }
+             }
+
+             visualizeProgress(carList, carScore);
+         }
+
+        visualizeWinner(carList, carScore);
     }
 
 
@@ -22,12 +38,18 @@ public class Application {
         System.out.println("경주할 자동차 이름을 입력하세요.(이름은 쉼표(,) 기준으로 구분)");
         String inputCarName = Console.readLine();
 
-        if (inputCarName == null || inputCarName.isBlank())
+        if (inputCarName == null || inputCarName.isBlank()) {
             throw new IllegalArgumentException("오류: 자동차 이름을 최소 한 개 이상 입력해야 합니다.");
+        }
 
         return Arrays.stream(inputCarName.split(","))
                 .map(String::trim)
                 .filter(name -> !name.isEmpty())
+                .peek(name -> {
+                    if (name.length() > 5) {
+                        throw new IllegalArgumentException("오류: 자동차 이름은 5자를 초과할 수 없습니다.");
+                    }
+                })
                 .collect(Collectors.toList());
     }
 
@@ -50,17 +72,16 @@ public class Application {
         return numTries;
     }
 
-    public static int getRandomNumber() {
-        return Randoms.pickNumberInRange(0, 9);
+    public static boolean decideForward() {
+        return Randoms.pickNumberInRange(0, 9) >= 4;
     }
 
-    public static void visualizeProgress(List<String> car, Map<String, Integer> randNumber) {
+    public static void visualizeProgress(List<String> car, Map<String, Integer> carForward) {
         for (String name : car) {
-            Integer repeat = randNumber.get(name);
+            Integer repeat = carForward.get(name);
 
             if (repeat == null) {
-                throw new IllegalArgumentException(
-                        "오류: " + name + " 차량 파악 중 문제가 발생했습니다.");
+                repeat = 0;
             }
 
             System.out.printf("%s : ", name);
@@ -71,6 +92,8 @@ public class Application {
 
             System.out.println();
         }
+
+        System.out.println();
     }
 
     public static void visualizeWinner(List<String> car, Map<String, Integer> score) {
