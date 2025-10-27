@@ -27,9 +27,7 @@ public class Application {
 
          for (int t = 0; t < tries; t++) {
              for (String car : carList) {
-                 if (decideForward()) {
-                     carScore.put(car, carScore.get(car) + 1);
-                 }
+                 carScore.put(car, carScore.get(car) + decideForward());
              }
 
              visualizeProgress(carList, carScore);
@@ -77,8 +75,13 @@ public class Application {
         return numTries;
     }
 
-    public static boolean decideForward() {
-        return Randoms.pickNumberInRange(0, 9) >= 4;
+    public static int decideForward() {
+        if (Randoms.pickNumberInRange(0, 9) >= 4) {
+            return 1;
+        }
+        else {
+            return 0;
+        }
     }
 
     public static void visualizeProgress(List<String> car, Map<String, Integer> carForward) {
