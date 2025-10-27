@@ -16,14 +16,19 @@ public class Application {
          int tries = getTries();
          Map<String, Integer> carScore = new HashMap<>();
 
+         for (String car : carList) {
+             carScore.put(car, 0);
+         }
+
          System.out.println("실행 결과");
+         if (tries == 0) {
+             visualizeProgress(carList, carScore);
+         }
+
          for (int t = 0; t < tries; t++) {
              for (String car : carList) {
                  if (decideForward()) {
-                     carScore.put(car, carScore.getOrDefault(car, 0) + 1);
-                 }
-                 else {
-                     carScore.put(car, carScore.getOrDefault(car, 0));
+                     carScore.put(car, carScore.get(car) + 1);
                  }
              }
 
